@@ -1,7 +1,13 @@
 import postmodel from '../../../DB/models/post.model.js';
 
 export const getAll=async(req, res, next)=>{
-    const posts=await postmodel.find({});
+    const posts=await postmodel.find({}).populate([
+        { path: 'userid', select: 'username' },
+        { path: 'like', select: 'username' },
+        { path: 'unlike', select: 'username' },
+        { path: 'comments'}
+    ]);
+
     res.status(200).json({ message: 'success',posts});
 }
 export const createpost=async(req, res, next)=>{
